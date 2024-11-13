@@ -26,8 +26,7 @@ APP.use(express.json());
 APP.use(require('cors')());  // Simula CORS
 APP.post('/api/products', (req, res) => {
   const { descripcion } = req.body;
-  const descripcionSanitizada = xss(descripcion);  // Sanitiza la descripción
-
+  const descripcionSanitizada = xss(descripcion);  
   if (descripcionSanitizada !== descripcion) {
     return res.status(400).json({ error: 'XSS detected' });
   }
@@ -40,8 +39,7 @@ APP.post('/api/products', (req, res) => {
 });
 APP.put('/api/products/:id', (req, res) => {
   const { descripcion } = req.body;
-  const descripcionSanitizada = xss(descripcion);  // Sanitiza la descripción
-
+  const descripcionSanitizada = xss(descripcion); 
   if (descripcionSanitizada !== descripcion) {
     return res.status(400).json({ error: 'XSS detected' });
   }
@@ -70,7 +68,7 @@ describe('Pruebas de Seguridad API Products', () => {
     const res = await request(APP)
       .post('/api/products')
       .send(productoInvalido);
-    expect(res.statusCode).toEqual(400); // Debería devolver 400 si hay inyección SQL
+    expect(res.statusCode).toEqual(400); // 400 si hay inyección SQL
   });
 
   it('No debe permitir inyección SQL en la API de productos (UPDATE)', async () => {
@@ -78,12 +76,12 @@ describe('Pruebas de Seguridad API Products', () => {
     const res = await request(APP)
       .put('/api/products/1')
       .send(productoInvalido);
-    expect(res.statusCode).toEqual(400); // Debería devolver 400 si hay inyección SQL
+    expect(res.statusCode).toEqual(400); // 400 si hay inyección SQL
   });
 
   it('No debe permitir inyección SQL en la API de productos (DELETE)', async () => {
     const res = await request(APP).delete('/api/products/1; DROP TABLE products;');
-    expect(res.statusCode).toEqual(400); // Debería devolver 400 si hay intento de SQL injection
+    expect(res.statusCode).toEqual(400); // 400 si hay intento de SQL injection
   });
 
   it('No debe permitir XSS en la creación de un producto (POST)', async () => {
@@ -91,7 +89,7 @@ describe('Pruebas de Seguridad API Products', () => {
     const res = await request(APP)
       .post('/api/products')
       .send(productoConXSS);
-    expect(res.statusCode).toEqual(400); // Debería devolver 400 si detecta XSS
+    expect(res.statusCode).toEqual(400); // 400 si detecta XSS
   });
 
   it('No debe permitir XSS en la edición de un producto (PUT)', async () => {
@@ -99,7 +97,7 @@ describe('Pruebas de Seguridad API Products', () => {
     const res = await request(APP)
       .put('/api/products/1')
       .send(productoConXSS);
-    expect(res.statusCode).toEqual(400); // Debería devolver 400 si detecta XSS
+    expect(res.statusCode).toEqual(400); // 400 si detecta XSS
   });
 
   it('Debería devolver un producto válido', async () => {

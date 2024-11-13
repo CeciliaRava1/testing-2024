@@ -31,13 +31,6 @@ describe('API Products', () => {
     expect(res.text).toEqual('¡Conexión exitosa!');
   });
 
-//   it('Debería obtener todos los productos', async () => {
-//     const res = await request(app).get('/api/products');
-//     expect(res.statusCode).toEqual(200);
-//     expect(res.body).toBeInstanceOf(Array);
-//     expect(res.body[0]).toHaveProperty('id');
-//   });
-
   it('Debería crear un nuevo producto', async () => {
     const nuevoProducto = { descripcion: 'Nuevo producto', precio: 200, stock: 20 };
     const res = await request(app)
@@ -55,7 +48,6 @@ describe('API Products', () => {
       .put('/api/products/1') // Edita el producto con ID 1
       .send(productoEditado);
     expect(res.statusCode).toEqual(200);
-    // Verifica que affectedRows sea 1, lo que indica que se actualizó
     expect(res.body).toHaveProperty('affectedRows', 1);
   });
 
